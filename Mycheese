@@ -1,0 +1,131 @@
+
+#include <stdio.h>
+#include <conio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+void input(float *a);
+void Sort (float *a, int n);
+void merge(float *a, int m, float *b, int n, float *done);
+float value, x;
+int counter = 0, a, b, i, j;
+float vect1[100], vect2[100], *vectmerg;
+int main(void)
+{
+	printf("Enter the elements of the first vector:");
+	input(vect1);
+	a = counter;
+	printf("Enter the elements of the second vector:");
+	counter = 0;
+	input(vect2);
+	b = counter;
+	
+	vectmerg = malloc ((a + b) * sizeof(float));
+
+	Sort (vect1, a);
+	Sort (vect2, b);
+	merge (vect1, a, vect2, b, vectmerg);
+	printf("\nThe sorted first vector: ");
+	for (i = 0; i < a; ++i)
+	{
+		printf("%.1f\t", vect1[i]);
+	}
+	printf("\nThe sorted second vector: ");
+	for (i = 0; i < b; ++i)
+	{
+		printf("%.1f\t", vect2[i]);
+	}
+	printf("\nThe single merged vector: ");
+	for (i = 0; i < (a+b); ++i)
+	{
+		printf("%.1f\t", vectmerg[i]);
+	}
+	
+	return 0;
+}
+
+void input(float *a)
+{
+	char helper[100];	
+	char *tokenptr, *helperptr;
+	gets(helper);
+	tokenptr = strtok (helper, " ");
+	helperptr = helper;
+	while (tokenptr != NULL)
+	{
+		char *stop;
+		while(1)
+		{
+			value = strtof(tokenptr, &stop);
+			if (stop == helperptr)
+			{
+				break;
+			}
+			a[counter] = value;
+			helperptr = stop;
+			counter++;
+		}
+		tokenptr = strtok (NULL, " ");
+	}
+}
+
+
+void Sort (float *a, int n)
+{
+	for (i = 0; i < n; ++i)  
+	{
+		for (j = i + 1; j < n ; ++j)   
+		{
+			if (a[i] > a[j])  
+			{
+				x = a[i];       
+				a[i] = a[j];    							  												  
+				a[j] = x;		
+			}
+		}
+	}
+
+}
+
+void merge(float *a, int m, float *b, int n, float *done)
+{
+ 
+  int i, j = 0, k = 0;
+	for (i = 0; i < m + n;) 
+	{
+		if (j < m && k < n) 
+		{
+	  		if (a[j] < b[k]) 
+	  		{
+	    		done[i] = a[j];
+	    		j++;
+	  		}
+	  		else 
+	  		{
+	    		done[i] = b[k];
+	    		k++;
+	  		}
+	  		i++;
+		}
+		else if (j == m) 
+		{
+		  	for (; i < m + n;) 
+		  	{
+				done[i] = b[k];
+				k++;
+				i++;
+		  	}
+		}
+		else 
+		{
+		  	for (; i < m + n;) 
+		  	{
+			    done[i] = a[j];
+			    j++;
+			    i++;
+		  	}
+		}
+	}
+}
